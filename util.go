@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/zach-klippenstein/goadb/internal/errors"
+	"github.com/exidler/goadb/internal/errors"
 )
 
 var (
@@ -37,4 +37,18 @@ func wrapClientError(err error, client interface{}, operation string, args ...in
 		Message: fmt.Sprintf("error performing %s on %s", fmt.Sprintf(operation, args...), clientType),
 		Details: client,
 	}
+}
+
+/*
+WrapErrf returns an *Err that wraps another *Err and has the same ErrCode.
+Panics if cause is not an *Err.
+
+To wrap generic errors, use WrapErrorf.
+*/
+func WrapErrf(cause error, format string, args ...interface{}) error {
+	return errors.WrapErrf(cause, format, args)
+}
+
+func Errorf(code ErrCode, format string, args ...interface{}) error {
+	return errors.Errorf(errors.ErrCode(code), format, args)
 }
